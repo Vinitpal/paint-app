@@ -80,7 +80,7 @@ function brushClick() {
 }
 
 function eraserClick() {
-  ctx.strokeStyle = "transparent";
+  ctx.strokeStyle = "#16161a";
   sizeChange();
 
   canvas.addEventListener("mousedown", brushDown, false);
@@ -89,6 +89,7 @@ function eraserClick() {
 }
 
 brush.addEventListener("click", brushClick);
+eraser.addEventListener("click", eraserClick);
 
 // let restoreArray = [];
 // let restoreIndex = -1;
