@@ -21,15 +21,15 @@ canvas.addEventListener("mouseup", brushUp);
 
 // todo color + size change
 
-//4. Color change conditions
+let restoreArray = [];
+let restoreIndex = -1;
+
 function colorChange() {
   myColor = color.value;
   ctx.strokeStyle = color;
 }
 
-//5. Size change conditions
-function sizeChange() {
-  mySize = size.value;
+function sizeChange(mySize) {
   ctx.lineWidth = mySize;
 }
 
@@ -68,11 +68,16 @@ function brushMove(e) {
 
 function brushUp() {
   mousePressed = false;
+
+  if (!mousePressed) {
+    restoreArray.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
+    restoreIndex++;
+  }
 }
 
 function brushClick() {
   colorChange();
-  sizeChange();
+  sizeChange(size);
 
   canvas.addEventListener("mousedown", brushDown);
   canvas.addEventListener("mousemove", brushMove);
@@ -81,7 +86,7 @@ function brushClick() {
 
 function eraserClick() {
   ctx.strokeStyle = "#16161a";
-  sizeChange();
+  sizeChange(size * 3);
 
   canvas.addEventListener("mousedown", brushDown, false);
   canvas.addEventListener("mousemove", brushMove, false);
@@ -90,6 +95,24 @@ function eraserClick() {
 
 brush.addEventListener("click", brushClick);
 eraser.addEventListener("click", eraserClick);
+
+// ctrl + z aka undo functioning
+document.addEventListener("keydown", function (event) {
+  if (event.ctrlKey && event.key === "z") {
+    console.log("ctrl + z");
+    undo();
+  }
+});
+
+function undo() {
+  if (restoreIndex <= 0) {
+    clearCanvas();
+  } else {
+    restoreIndex -= 1;
+    restoreArray.pop();
+    ctx.putImageData(restoreArray[restoreIndex], 0, 0);
+  }
+}
 
 // let restoreArray = [];
 // let restoreIndex = -1;
