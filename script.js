@@ -38,6 +38,10 @@ info.addEventListener("click", () => {
   modal.style.display = "block";
 });
 
+window.onload = (event) => {
+  modal.style.display = "block";
+};
+
 span.onclick = function () {
   modal.style.display = "none";
 };
