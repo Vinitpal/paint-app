@@ -13,33 +13,56 @@ const brush = document.getElementById("brush");
 const line = document.getElementById("line");
 const eraser = document.getElementById("eraser");
 const rectangle = document.getElementById("rectangle");
-const circle = document.getElementById("circle");
+const bg = document.getElementById("bg");
 const clear = document.getElementById("clear");
 const save = document.getElementById("save");
 
-const items = document.querySelectorAll(".items");
-
-let itemSelected = true;
+canvas.addEventListener("mousedown", brushDown);
+canvas.addEventListener("mousemove", brushMove);
+canvas.addEventListener("mouseup", brushUp);
 
 // ----- Pencil and toolbox Menu -----
+const items = document.querySelectorAll(".items");
 const brush_menu = document.getElementById("brush-menu");
+const bg_menu = document.getElementById("bg-menu");
+const eraser_menu = document.getElementById("eraser-menu");
+// eraser - options - active;
 
 items.forEach((item, idx) => {
   item.addEventListener("click", () => {
     items.forEach((item) => item.classList.remove("active"));
     if (items[idx].classList.contains("pencil")) {
       brush.classList.add("active");
+
+      //remove other pop up
+      bg_menu.classList.remove("bg-option-active");
+      eraser_menu.classList.remove("eraser-options-active");
+
       brush_menu.classList.add("pencil-active");
+    } else if (items[idx].classList.contains("bg")) {
+      bg.classList.add("active");
+
+      //remove other pop up
+      brush_menu.classList.remove("pencil-active");
+      eraser_menu.classList.remove("eraser-options-active");
+
+      bg_menu.classList.add("bg-option-active");
+    } else if (items[idx].classList.contains("eraser")) {
+      eraser.classList.add("active");
+
+      // remove other pop up
+      brush_menu.classList.remove("pencil-active");
+      bg_menu.classList.remove("bg-option-active");
+
+      eraser_menu.classList.add("eraser-options-active");
     } else {
       items[idx].classList.add("active");
       brush_menu.classList.remove("pencil-active");
+      bg_menu.classList.remove("bg-option-active");
+      eraser_menu.classList.remove("eraser-options-active");
     }
   });
 });
-
-canvas.addEventListener("mousedown", brushDown);
-canvas.addEventListener("mousemove", brushMove);
-canvas.addEventListener("mouseup", brushUp);
 
 const optionItems = document.querySelectorAll(".options-items");
 
@@ -70,17 +93,31 @@ options.forEach((option) => {
   });
 });
 
+const bgOptions = document.querySelectorAll(".bg-options-items div");
+
+bgOptions.forEach((option) => {
+  option.addEventListener("click", () => {
+    console.log("working");
+    let bgColor = option.className;
+    canvas.style.background = bgColor;
+  });
+});
+
 const sizeOptions = document.querySelectorAll(".size-options-items div");
 
 sizeOptions.forEach((option) => {
   option.addEventListener("click", () => {
     if (option.classList.contains("marker")) {
-      // size = 10;
-      sizeChange(10);
+      size = 15;
+      sizeChange(size);
+    } else if (option.classList.contains("mid")) {
+      size = 8;
+      sizeChange(size);
     } else if (option.classList.contains("normal")) {
-      // size = 5;
-      sizeChange(5);
+      size = 5;
+      sizeChange(size);
     }
+    console.log(ctx.lineWidth);
   });
 });
 
@@ -92,9 +129,9 @@ function colorChange(color) {
   ctx.strokeStyle = myColor;
 }
 
-function sizeChange(size) {
-  mySize = size;
-  ctx.lineWidth = mySize;
+function sizeChange(mySize) {
+  // mySize = size;
+  ctx.lineWidth = size;
 }
 
 // ----- coordinates -----
@@ -132,9 +169,8 @@ function brushDown(e) {
   let coordinates = getCoordinates(canvas, e);
   let x0 = coordinates.x;
   let y0 = coordinates.y;
-
+  ctx.lineWidth = size;
   ctx.beginPath();
-  // colorChange();
 
   if (tool === "brush") {
     ctx.moveTo(x0, y0);
@@ -170,14 +206,14 @@ function brushMove(e) {
     lastY: y1,
   });
 
-  sizeChange(size);
+  // sizeChange(size);
 
   if (tool === "brush") {
     drawBrush(canvas, x1, y1);
   } else if (tool === "eraser" && mousePressed) {
     ctx.globalCompositeOperation = "destination-out";
     ctx.lineCap = "round";
-    ctx.lineWidth = 10;
+    ctx.lineWidth = size * 2;
     ctx.lineTo(x1, y1);
     ctx.stroke();
   } else if (tool === "line" && mousePressed) {
@@ -217,7 +253,7 @@ function brushUp(e) {
 function brushClick() {
   tool = "brush";
   // colorChange();
-  sizeChange(size);
+  // sizeChange(size);
 
   canvas.addEventListener("mousedown", brushDown);
   canvas.addEventListener("mousemove", brushMove);
@@ -227,7 +263,7 @@ function brushClick() {
 function eraserClick() {
   tool = "eraser";
   // ctx.strokeStyle = "#16161a";
-  sizeChange(size * 3);
+  // sizeChange(size * 3);
 
   canvas.addEventListener("mousedown", brushDown);
   canvas.addEventListener("mousemove", brushMove);
@@ -253,7 +289,7 @@ function circleClick() {
 brush.addEventListener("click", brushClick);
 eraser.addEventListener("click", eraserClick);
 line.addEventListener("click", lineClick);
-circle.addEventListener("click", circleClick);
+// circle.addEventListener("click", circleClick);
 
 // ----- undo functioning -----
 
@@ -284,14 +320,14 @@ function clearCanvas() {
 }
 
 // ----- Save Button function -----
-// save.addEventListener("click", function () {
-//   let imageName = prompt("Please enter image name");
-//   let canvasDataURL = canvas.toDataURL();
-//   let a = document.createElement("a");
-//   a.href = canvasDataURL;
-//   a.download = imageName || none;
-//   a.click();
-// });
+save.addEventListener("click", function () {
+  let imageName = prompt("Please enter image name");
+  let canvasDataURL = canvas.toDataURL();
+  let a = document.createElement("a");
+  a.href = canvasDataURL;
+  a.download = imageName || none;
+  a.click();
+});
 
 // ----- window resize function -----
 resize();
@@ -299,114 +335,3 @@ function resize() {
   ctx.canvas.width = window.innerWidth;
   ctx.canvas.height = window.innerHeight;
 }
-
-// let restoreArray = [];
-// let restoreIndex = -1;
-
-// // start drawing event
-// canvas.addEventListener("mousedown", (e) => {
-//   x = e.offsetX;
-//   y = e.offsetY;
-
-//   drawCircles(x, y);
-
-//   isPressed = true;
-// });
-
-// // stop drawing event
-// canvas.addEventListener("mouseup", (e) => {
-//   isPressed = false;
-//   x = undefined;
-//   y = undefined;
-
-//   size = 1;
-//   isPressed = false;
-
-//   if (!isPressed) {
-//     restoreArray.push(ctx.getImageData(0, 0, canvas.width, canvas.height));
-//     restoreIndex++;
-//   }
-// });
-
-// canvas.addEventListener("mouseout", (e) => {
-//   if (!isPressed) {
-//     return;
-//   }
-//   e.preventDefault();
-//   e.stopPropagation();
-//   isPressed = false;
-// });
-
-// // drag drawing event
-// canvas.addEventListener("mousemove", (e) => {
-//   e.preventDefault();
-//   e.stopPropagation();
-//   if (isPressed) {
-//     const x2 = e.offsetX;
-//     const y2 = e.offsetY;
-
-//     const r1 = size;
-//     const r2 = size;
-
-//     console.log(x2, y2);
-
-//     ellipse(x2, y2, r1, r2);
-//     // drawOval(x, y, x2, y2);
-//     // drawCircles(x2, y2);
-//     // drawLine(x, y, x2, y2);
-
-//     // x = x2;
-//     // y = y2;
-//     size++;
-//   }
-// });
-
-// function drawCircles(x, y) {
-//   ctx.beginPath();
-//   ctx.arc(x, y, size, 0, Math.PI * 2);
-//   ctx.fillStyle = color;
-//   ctx.fill();
-// }
-
-// function drawLine(x1, y1, x2, y2) {
-//   ctx.beginPath();
-//   ctx.moveTo(x1, y1);
-//   ctx.lineTo(x2, y2);
-//   ctx.lineCap = "round";
-//   ctx.strokeStyle = color;
-//   ctx.lineWidth = size * 2;
-//   ctx.stroke();
-// }
-
-// function ellipse(x, y, r1, r2) {
-//   ctx.beginPath();
-//   ctx.ellipse(x, y, r1, r2, 0, 0, Math.PI * 2);
-//   ctx.fill();
-// }
-
-// function drawOval(x, y) {
-//   ctx.beginPath();
-//   ctx.moveTo(startX, startY + (y - startY) / 2);
-//   ctx.bezierCurveTo(startX, startY, x, startY, x, startY + (y - startY) / 2);
-//   ctx.bezierCurveTo(x, y, startX, y, startX, startY + (y - startY) / 2);
-//   ctx.closePath();
-//   ctx.stroke();
-// }
-
-// // ctrl + z aka undo functioning
-// document.addEventListener("keydown", function (event) {
-//   if (event.ctrlKey && event.key === "z") {
-//     console.log("ctrl + z");
-//     undo();
-//   }
-// });
-
-// function undo() {
-//   if (restoreIndex <= 0) {
-//     clear();
-//   } else {
-//     restoreIndex -= 1;
-//     restoreArray.pop();
-//     ctx.putImageData(restoreArray[restoreIndex], 0, 0);
-//   }
-// }

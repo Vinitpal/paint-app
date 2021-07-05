@@ -19,17 +19,35 @@
           <div class="items pencil" id="brush" data-selected="true">
             <i class="fa-light fa-pencil fa-2x"></i>
           </div>
-          <div class="items" id="circle" data-selected="false">
-            <i class="fa-light fa-circle fa-2x"></i>
+          <div class="items bg" id="bg" data-selected="false">
+            <i class="fa-solid fa-images fa-2x"></i>
           </div>
           <div class="items" id="line" data-selected="false">
             <i class="fa-light fa-pipe fa-2x"></i>
           </div>
-          <div class="items" id="eraser" data-selected="false">
+          <div class="items eraser" id="eraser" data-selected="false">
             <i class="fa-light fa-eraser fa-2x"></i>
+          </div>
+          <div class="items" id="save" data-selected="false">
+            <i class="fa-solid fa-download fa-2x"></i>
           </div>
           <div class="items" id="clear" data-selected="false">
             <i class="fa-light fa-xmark fa-2x"></i>
+          </div>
+        </div>
+        <!-- Background Options -->
+        <div class="bg-options" id="bg-menu">
+          <div class="bg-options-items">
+            <div class="black"></div>
+          </div>
+          <div class="bg-options-items">
+            <div class="red"></div>
+          </div>
+          <div class="bg-options-items">
+            <div class="green"></div>
+          </div>
+          <div class="bg-options-items">
+            <div class="white"></div>
           </div>
         </div>
         <!-- Pencil Options -->
@@ -46,9 +64,25 @@
           <div class="options-items">
             <div class="white"></div>
           </div>
+
           <hr />
           <div class="size-options-items selected">
             <div class="size normal"></div>
+          </div>
+          <div class="size-options-items">
+            <div class="size mid"></div>
+          </div>
+          <div class="size-options-items">
+            <div class="size marker"></div>
+          </div>
+        </div>
+        <!-- Eraser Options -->
+        <div class="eraser-options" id="eraser-menu">
+          <div class="size-options-items selected">
+            <div class="size normal"></div>
+          </div>
+          <div class="size-options-items">
+            <div class="size mid"></div>
           </div>
           <div class="size-options-items">
             <div class="size marker"></div>
