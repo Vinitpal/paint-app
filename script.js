@@ -7,7 +7,7 @@ let mousePressed = false;
 ctx.lineJoin = "round";
 ctx.lineCap = "round";
 let x, y;
-let existingLines = [];
+// let existingLines = [];
 
 const brush = document.getElementById("brush");
 const line = document.getElementById("line");
@@ -16,6 +16,7 @@ const rectangle = document.getElementById("rectangle");
 const bg = document.getElementById("bg");
 const clear = document.getElementById("clear");
 const save = document.getElementById("save");
+const info = document.getElementById("info");
 
 canvas.addEventListener("mousedown", brushDown);
 canvas.addEventListener("mousemove", brushMove);
@@ -27,6 +28,25 @@ const brush_menu = document.getElementById("brush-menu");
 const bg_menu = document.getElementById("bg-menu");
 const eraser_menu = document.getElementById("eraser-menu");
 // eraser - options - active;
+
+// Modal JS
+var modal = document.getElementById("myModal");
+var modalMsg = document.getElementById("modal-message");
+var span = document.getElementsByClassName("close")[0];
+
+info.addEventListener("click", () => {
+  modal.style.display = "block";
+});
+
+span.onclick = function () {
+  modal.style.display = "none";
+};
+
+window.onclick = function (event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+};
 
 items.forEach((item, idx) => {
   item.addEventListener("click", () => {

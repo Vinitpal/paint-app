@@ -31,6 +31,9 @@
           <div class="items" id="save" data-selected="false">
             <i class="fa-solid fa-download fa-2x"></i>
           </div>
+          <div class="items" id="info" data-selected="false">
+            <i class="fa-solid fa-circle-info fa-2x"></i>
+          </div>
           <div class="items" id="clear" data-selected="false">
             <i class="fa-light fa-xmark fa-2x"></i>
           </div>
@@ -38,10 +41,10 @@
         <!-- Background Options -->
         <div class="bg-options" id="bg-menu">
           <div class="bg-options-items">
-            <div class="black"></div>
+            <div class="blue"></div>
           </div>
           <div class="bg-options-items">
-            <div class="red"></div>
+            <div class="yellow"></div>
           </div>
           <div class="bg-options-items">
             <div class="green"></div>
@@ -94,6 +97,14 @@
       <!-- Right Side Ends -->
       <div class="right">
         <canvas id="canvas"></canvas>
+      </div>
+    </div>
+
+    <!-- Modal HTML -->
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p id="modal-message">Some text in the Modal..</p>
       </div>
     </div>
 
