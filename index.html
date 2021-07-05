@@ -5,23 +5,64 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css" />
-    <title>Document</title>
+    <link
+      rel="stylesheet"
+      href="https://pro.fontawesome.com/releases/v6.0.0-beta1/css/all.css"
+    />
+    <title>Whiteboard</title>
   </head>
   <body>
-    <canvas id="canvas"></canvas>
-    <div class="toolbox">
-      <!-- <div class="line"></div>
-      <div class="shapes"></div> -->
-      <div class="clear">
-        <button id="brush">Brush</button>
-        <button id="eraser">Eraser</button>
-        <button id="line">Line</button>
-        <button id="rectangle">Rectangle</button>
-        <button id="circle">Circle</button>
-        <button id="clear">Clear</button>
-        <button id="save">Save</button>
+    <div class="container">
+      <!-- Left Side Starts -->
+      <div class="left">
+        <div class="toolbox">
+          <div class="items pencil" id="brush" data-selected="true">
+            <i class="fa-light fa-pencil fa-2x"></i>
+          </div>
+          <div class="items" id="circle" data-selected="false">
+            <i class="fa-light fa-circle fa-2x"></i>
+          </div>
+          <div class="items" id="line" data-selected="false">
+            <i class="fa-light fa-pipe fa-2x"></i>
+          </div>
+          <div class="items" id="eraser" data-selected="false">
+            <i class="fa-light fa-eraser fa-2x"></i>
+          </div>
+          <div class="items" id="clear" data-selected="false">
+            <i class="fa-light fa-xmark fa-2x"></i>
+          </div>
+        </div>
+        <!-- Pencil Options -->
+        <div class="pencil-options" id="brush-menu">
+          <div class="options-items">
+            <div class="black"></div>
+          </div>
+          <div class="options-items">
+            <div class="red"></div>
+          </div>
+          <div class="options-items">
+            <div class="green"></div>
+          </div>
+          <div class="options-items">
+            <div class="white"></div>
+          </div>
+          <hr />
+          <div class="options-items">
+            <div class="normal"></div>
+          </div>
+          <div class="options-items">
+            <div class="marker"></div>
+          </div>
+        </div>
+      </div>
+      <!-- Left Side Ends -->
+      <!-- Right Side Starts -->
+      <!-- Right Side Ends -->
+      <div class="right">
+        <canvas id="canvas"></canvas>
       </div>
     </div>
+
     <script src="./script.js"></script>
   </body>
 </html>
