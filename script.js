@@ -29,29 +29,6 @@ const bg_menu = document.getElementById("bg-menu");
 const eraser_menu = document.getElementById("eraser-menu");
 // eraser - options - active;
 
-// Modal JS
-var modal = document.getElementById("myModal");
-var modalMsg = document.getElementById("modal-message");
-var span = document.getElementsByClassName("close")[0];
-
-info.addEventListener("click", () => {
-  modal.style.display = "block";
-});
-
-window.onload = (event) => {
-  modal.style.display = "block";
-};
-
-span.onclick = function () {
-  modal.style.display = "none";
-};
-
-window.onclick = function (event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-};
-
 items.forEach((item, idx) => {
   item.addEventListener("click", () => {
     items.forEach((item) => item.classList.remove("active"));
@@ -121,7 +98,6 @@ const bgOptions = document.querySelectorAll(".bg-options-items div");
 
 bgOptions.forEach((option) => {
   option.addEventListener("click", () => {
-    console.log("working");
     let bgColor = option.className;
     canvas.style.background = bgColor;
   });
@@ -141,7 +117,6 @@ sizeOptions.forEach((option) => {
       size = 5;
       sizeChange(size);
     }
-    console.log(ctx.lineWidth);
   });
 });
 
@@ -191,8 +166,10 @@ function drawLine(x, y) {
 function brushDown(e) {
   mousePressed = true;
   let coordinates = getCoordinates(canvas, e);
+
   let x0 = coordinates.x;
   let y0 = coordinates.y;
+
   ctx.lineWidth = size;
   ctx.beginPath();
 
@@ -205,32 +182,13 @@ function brushDown(e) {
     ctx.moveTo(x0, y0);
     ctx.stroke();
     ctx.fill();
-  } else if (tool === "line") {
-    existingLines = [
-      {
-        startX: x0,
-        startY: y0,
-      },
-    ];
-    drawLine(x0, y0);
   }
-  // else if (tool === "circle") {
-  //   // ctx.arc(x0, y0, size, 0, Math.PI * 2);
-  //   // ctx.stroke;
-  // }
 }
 
 function brushMove(e) {
   let coordinates = getCoordinates(canvas, e);
   let x1 = coordinates.x;
   let y1 = coordinates.y;
-
-  existingLines.push({
-    lastX: x1,
-    lastY: y1,
-  });
-
-  // sizeChange(size);
 
   if (tool === "brush") {
     drawBrush(canvas, x1, y1);
@@ -240,20 +198,7 @@ function brushMove(e) {
     ctx.lineWidth = size * 2;
     ctx.lineTo(x1, y1);
     ctx.stroke();
-  } else if (tool === "line" && mousePressed) {
-    // clearCanvas();
-    let prevX = existingLines[1].lastX;
-    let prevY = existingLines[1].lastY;
-
-    // ctx.moveTo(prevX, prevY);
-    // ctx.lineTo(x1, y1);
-    // console.log("working2");
-    ctx.stroke();
   }
-  // else if (tool === "circle") {
-  //   ctx.arc(x1, y1, 8, 0, Math.PI * 2);
-  //   ctx.stroke;
-  // }
 }
 
 function brushUp(e) {
