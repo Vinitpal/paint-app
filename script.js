@@ -3,7 +3,6 @@ const ctx = canvas.getContext("2d");
 
 let tool = "brush";
 let size = 5;
-// let color = "white";
 let mousePressed = false;
 ctx.lineJoin = "round";
 ctx.lineCap = "round";
@@ -42,7 +41,25 @@ canvas.addEventListener("mousedown", brushDown);
 canvas.addEventListener("mousemove", brushMove);
 canvas.addEventListener("mouseup", brushUp);
 
-// todo color + size change
+const optionItems = document.querySelectorAll(".options-items");
+
+optionItems.forEach((item, idx) => {
+  item.addEventListener("click", () => {
+    optionItems.forEach((option) => option.classList.remove("selected"));
+    optionItems[idx].classList.add("selected");
+  });
+});
+
+const sizeOptionItems = document.querySelectorAll(".size-options-items");
+
+sizeOptionItems.forEach((item, idx) => {
+  item.addEventListener("click", () => {
+    sizeOptionItems.forEach((option) => option.classList.remove("selected"));
+    sizeOptionItems[idx].classList.add("selected");
+  });
+});
+
+// ----- color + size change -----
 
 const options = document.querySelectorAll(".options-items div");
 
@@ -50,6 +67,20 @@ options.forEach((option) => {
   option.addEventListener("click", () => {
     let color = option.className;
     colorChange(color);
+  });
+});
+
+const sizeOptions = document.querySelectorAll(".size-options-items div");
+
+sizeOptions.forEach((option) => {
+  option.addEventListener("click", () => {
+    if (option.classList.contains("marker")) {
+      // size = 10;
+      sizeChange(10);
+    } else if (option.classList.contains("normal")) {
+      // size = 5;
+      sizeChange(5);
+    }
   });
 });
 
@@ -61,7 +92,8 @@ function colorChange(color) {
   ctx.strokeStyle = myColor;
 }
 
-function sizeChange(mySize) {
+function sizeChange(size) {
+  mySize = size;
   ctx.lineWidth = mySize;
 }
 
@@ -102,7 +134,7 @@ function brushDown(e) {
   let y0 = coordinates.y;
 
   ctx.beginPath();
-  colorChange();
+  // colorChange();
 
   if (tool === "brush") {
     ctx.moveTo(x0, y0);
@@ -184,7 +216,7 @@ function brushUp(e) {
 
 function brushClick() {
   tool = "brush";
-  colorChange();
+  // colorChange();
   sizeChange(size);
 
   canvas.addEventListener("mousedown", brushDown);
@@ -195,7 +227,7 @@ function brushClick() {
 function eraserClick() {
   tool = "eraser";
   // ctx.strokeStyle = "#16161a";
-  // sizeChange(size * 3);
+  sizeChange(size * 3);
 
   canvas.addEventListener("mousedown", brushDown);
   canvas.addEventListener("mousemove", brushMove);
